@@ -1,10 +1,20 @@
 import Contact from "../Contact/Contact"
-export default function ContactList({contactList, onDelete}) {
+import { selectContacts } from "../../redux/contactsSlice";
+import { selectFilters } from "../../redux/filtersSlice";
+import { useSelector } from "react-redux";
+
+export default function ContactList() {
+    const contacts = useSelector(selectContacts)
+    const filter = useSelector(selectFilters)
+
+    const visibleContacts = contacts.filter((contact) => 
+        contact.name.toLowerCase().includes(filter.toLowerCase())
+)
     return(
         <div>
-            {contactList.map(contact => {
+            {visibleContacts.map(contact => {
                 return(
-                <Contact key={contact.id} contact={contact} onDelete={onDelete}s/>)
+                <Contact key={contact.id} contact={contact}/>)
             })}
         </div>
     )
